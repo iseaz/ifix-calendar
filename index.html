@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./FullCalendar/css/fullcalendar.min.css">
+	<title>Document</title>
+</head>
+
+<body>
+	<div id="full-calendar"></div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="./FullCalendar/lib/moment.min.js"></script>
+	<script src="./FullCalendar/lib/fullcalendar.min.js"></script>
+	<script>
+		var getDefaultDate = localStorage.getItem('defaultDate');
+		var defaultDate = '';
+
+		if (getDefaultDate) {
+			defaultDate = getDefaultDate;
+		} else {
+			defaultDate = moment(new Date()).format('YYYY-MM-DD');
+		}
+
+		console.log('defaultDate', defaultDate);
+
+		function Gen_Calendar(dataListEvent) {
+			$('#full-calendar').fullCalendar({
+				defaultDate: defaultDate,
+				header: {
+					left: 'prev, next',
+					center: 'title',
+					right: ''
+				},
+				editable: true,
+				droppable: true,
+				eventClick: function (calEvent, jsEvent, view) {
+					var dtSelect = view.title;
+					var dtSelectC = dtSelect.slice(0, dtSelect.length) + " 01";
+					var date_1 = moment(new Date(dtSelectC)).format('YYYY-MM-DD');
+
+					localStorage.setItem('defaultDate', date_1);
+				},
+				viewRender: function (view, element) {
+					var dtSelect = view.title;
+					var dtSelectC = dtSelect.slice(0, dtSelect.length) + " 01";
+					var date_1 = moment(new Date(dtSelectC)).format('YYYY-MM-DD');
+
+					window.localStorage.setItem('defaultDate', date_1);
+				}
+			});
+		}
+
+		$(document).ready(function () {
+			Gen_Calendar();
+		});
+	</script>
+</body>
+
+</html>
